@@ -24,11 +24,16 @@ const App = () => {
     },
   ];
 
-  console.log('App 실행!');
+  //ExpenseForm에게 내려보낼 함수
+  const addExpenseHandler = (newExpense) => {
+    //매개변수로 값을 받음 + 변수 명은 상관 없음
+    console.log('App 컴포넌트에서 응답함!');
+    console.log('App.js의 addExpenseHandler: ', newExpense);
+  };
 
   return (
     <>
-      <NewExpense />
+      <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses items={expenses} />
     </>
   );

@@ -1,13 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ExpenseForm.css';
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ onSaveExpense }) => {
+  const [userInput, setUserInput] = useState({
+    title: '',
+    price: '',
+    date: '',
+  }); //객체 자체를 초기값으로 줌
+
+  const titleChangeHanler = (e) => {
+    setUserInput((prevUserInput) => {
+      return {
+        ...prevUserInput,
+        title: e.target.value,
+      };
+    });
+  };
+
+  const priceChangeHandler = (e) => {
+    setUserInput({
+      ...userInput,
+      price: e.target.value,
+    });
+  };
+
+  const dateChangeHandler = (e) => {
+    setUserInput({
+      ...userInput,
+      date: e.target.value,
+    });
+  };
+
+  const formSubmitHandler = (e) => {
+    e.preventDefault(); //submit 차단 (submit이 실제로 실행되지 않음)
+    console.log('pressed submit button!'); //화면 전환
+    console.log(userInput);
+
+    onSaveExpense(userInput);
+
+    //입력창 리셋
+    setUserInput({
+      title: '',
+      price: '',
+      date: '',
+    });
+  };
+
   return (
-    <form>
+    <form onSubmit={formSubmitHandler}>
       <div className='new-expense__controls'>
         <div className='new-expense__control'>
           <label>Title</label>
-          <input type='text' />
+          <input
+            type='text'
+            onChange={titleChangeHanler}
+            value={userInput.title}
+          />
         </div>
         <div className='new-expense__control'>
           <label>Price</label>
@@ -15,6 +63,8 @@ const ExpenseForm = () => {
             type='number'
             min='100'
             step='100'
+            onChange={priceChangeHandler}
+            value={userInput.price}
           />
         </div>
         <div className='new-expense__control'>
@@ -23,6 +73,8 @@ const ExpenseForm = () => {
             type='date'
             min='2019-01-01'
             max='2025-12-31'
+            onChange={dateChangeHandler}
+            value={userInput.date}
           />
         </div>
       </div>

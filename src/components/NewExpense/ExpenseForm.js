@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ExpenseForm.css';
 
-const ExpenseForm = ({ onSaveExpense }) => {
+const ExpenseForm = ({ onSaveExpense, onToggle }) => {
   const [userInput, setUserInput] = useState({
     title: '',
     price: '',
@@ -33,10 +33,17 @@ const ExpenseForm = ({ onSaveExpense }) => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault(); //submit 차단 (submit이 실제로 실행되지 않음)
+
+    const newExpense = {
+      title: userInput.title,
+      price: userInput.price,
+      date: new Date(userInput.date),
+    };
+
     console.log('pressed submit button!'); //화면 전환
     console.log(userInput);
 
-    onSaveExpense(userInput);
+    onSaveExpense(newExpense);
 
     //입력창 리셋
     setUserInput({
@@ -44,6 +51,13 @@ const ExpenseForm = ({ onSaveExpense }) => {
       price: '',
       date: '',
     });
+
+    onToggle();
+  };
+
+  const cancelInsertHandler = () => {
+    // console.log('취소 버튼 누름!');
+    onToggle();
   };
 
   return (
@@ -79,6 +93,12 @@ const ExpenseForm = ({ onSaveExpense }) => {
         </div>
       </div>
       <div className='new-expense__actions'>
+        <button
+          type='button'
+          onClick={cancelInsertHandler}
+        >
+          Cancel
+        </button>
         <button type='submit'>Add Expense</button>
       </div>
     </form>

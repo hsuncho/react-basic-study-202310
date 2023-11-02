@@ -6,9 +6,10 @@ import Card from '../UI/Card';
 import ExpenseChart from './ExpenseChart';
 
 const Expenses = ({ items }) => {
-  //선택된 연도 상태값 관리
+  console.log('items: ', items);
+  // 선택된 연도 상태값 관리
   const [filteredYear, setFilteredYear] = useState(
-    new Date().getFullYear.toString()
+    new Date().getFullYear().toString()
   );
 
   // 자식 컴포넌트 ExpensesFilter에 있는 선택 연도를 끌어올리는 함수
@@ -17,7 +18,7 @@ const Expenses = ({ items }) => {
     setFilteredYear(selectedYear); //상태 변수의 값은 항상 setter로 바꾸어야 해
   };
 
-  //ExpenseItem을 동적 렌더링하기
+  // ExpenseItem을 동적 렌더링하기
   // const iterateExpenseItem = () => {
   //   // 자바스크립트 배열의 메서드 map(배열 요소에 적용할 함수)
   //   // 콜백 함수의 매개값으로 배열의 요소가 하나씩 전달됨
@@ -31,15 +32,15 @@ const Expenses = ({ items }) => {
   //       date={item.date}
   //     />
   //   ));
-  // }; //items가 리턴되는 것이 아니라 items의 길이만큼 component가 작성된 새로운 배열이 리턴됨
-  // //iterateExpenseItem()으로
+  // }; // items가 리턴되는 것이 아니라 items의 길이만큼 component가 작성된 새로운 배열이 리턴됨
+  // // iterateExpenseItem()으로
 
   const filteredItems = items.filter(
     (item) => item.date.getFullYear().toString() === filteredYear
-    //필터링 먼저 진행
+    // 필터링 먼저 진행
   );
 
-  //조건부 렌더링을 위한 변수
+  // 조건부 렌더링을 위한 변수
   let expenseContent = <p> 아직 등록된 지출이 없습니다.</p>;
 
   if (filteredItems.length > 0) {
@@ -56,7 +57,7 @@ const Expenses = ({ items }) => {
   return (
     <Card className='expenses'>
       <ExpensesFilter onChangeFilter={filterChangeHandler} />
-      <ExpenseChart />
+      <ExpenseChart expenses={filteredItems} />
       {expenseContent}
     </Card>
   );

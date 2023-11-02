@@ -4,13 +4,13 @@ import Expenses from './components/Expenses/Expenses';
 import NewExpense from './components/NewExpense/NewExpense';
 
 const App = () => {
-  //지출 항목 객체 배열
+  // 지출 항목 객체 배열
 
   const expenses = [
     {
       id: 1,
       title: '바나나',
-      price: 2000,
+      price: 20000,
       date: new Date(2023, 3 - 1, 23),
     },
     {
@@ -33,12 +33,12 @@ const App = () => {
     },
   ];
 
-  //지출 객체 배열을 상태변수로 관리
+  // 지출 객체 배열을 상태변수로 관리
   const [expenseList, setExpenseList] = useState(expenses);
 
-  //ExpenseForm에게 내려보낼 함수
+  // ExpenseForm에게 내려보낼 함수
   const addExpenseHandler = (newExpense) => {
-    //매개변수로 값을 받음 + 변수 명은 상관 없음
+    // 매개변수로 값을 받음 + 변수 명은 상관 없음
     console.log('App 컴포넌트에서 응답함!');
 
     const modifyExpense = {

@@ -6,7 +6,7 @@ const ExpenseForm = ({ onSaveExpense, onToggle }) => {
     title: '',
     price: '',
     date: '',
-  }); //객체 자체를 초기값으로 줌
+  }); // 객체 자체를 초기값으로 줌
 
   const titleChangeHanler = (e) => {
     setUserInput((prevUserInput) => {
@@ -32,20 +32,21 @@ const ExpenseForm = ({ onSaveExpense, onToggle }) => {
   };
 
   const formSubmitHandler = (e) => {
-    e.preventDefault(); //submit 차단 (submit이 실제로 실행되지 않음)
+    e.preventDefault(); // submit 차단 (submit이 실제로 실행되지 않음)
 
     const newExpense = {
       title: userInput.title,
-      price: userInput.price,
+      // price: Number(userInput.price),
+      price: +userInput.price, // 정수 타입으로 변환
       date: new Date(userInput.date),
     };
 
-    console.log('pressed submit button!'); //화면 전환
+    console.log('pressed submit button!'); // 화면 전환
     console.log(userInput);
 
     onSaveExpense(newExpense);
 
-    //입력창 리셋
+    // 입력창 리셋
     setUserInput({
       title: '',
       price: '',

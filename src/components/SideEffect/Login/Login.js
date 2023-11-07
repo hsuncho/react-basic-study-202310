@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from '../../UI/Card';
 import styles from './Login.module.css';
@@ -16,20 +16,35 @@ const Login = ({ onLogin }) => {
   // 이메일, 패스워드가 둘 다 동시에 정상적인 상태인지 확인
   const [formIsValid, setFormIsValid] = useState(false);
 
+  // 입력란을 모두 체크하여 form의 버튼 disabled를 해제하는 상태 변수
+  // 상태 변수 formIsValid의 사이드 이펙트를 처리하는 영역
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      //make log and setFormisValid delayed per second
+      console.log('useEffect called in Login.js!');
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      );
+    }, 1000);
+
+    // cleanup 함수 - 컴포넌트가 업데이트 되거나 없어지기 전에 실행
+    return () => {
+      console.log('clean up!'); // data before rerender
+      clearTimeout(timer); // remove setTimeout function before rerendered
+    };
+
+    // 이 배열에 상태변수를 넣어주면 그 상태변수가 바뀔 때마다 useEffect를 재실행함.
+    // if there's no data in array, then useEffect is executed at first
+    // array is for repeat and necessary(although empty)
+  }, [enteredEmail, enteredPassword]);
+
   const emailChangeHandler = (e) => {
     setEnteredEmail(e.target.value);
-
-    setFormIsValid(
-      e.target.value.includes('@') && enteredPassword.trim().length > 6
-    );
+    // useEffect executed as enteredEmail's status altered
   };
 
   const passwordChangeHandler = (e) => {
     setEnteredPassword(e.target.value);
-
-    setFormIsValid(
-      e.target.value.trim().length > 6 && enteredEmail.includes('@')
-    );
   };
 
   const validateEmailHandler = () => {

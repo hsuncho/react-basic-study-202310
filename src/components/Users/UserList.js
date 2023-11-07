@@ -12,7 +12,7 @@ const UserList = ({ users }) => {
             user //return 문 대신 ()
           ) => (
             <li key={user.id}>
-              {user.userName} ({user.age}세)
+              {user.username} ({user.age}세)
             </li>
           )
         )}

@@ -34,10 +34,24 @@ const emailReducer = (state, action) => {
     };
   }
 
-  return {
-    value: '',
-    isValid: null,
-  };
+  // return {
+  //   value: '',
+  //   isValid: null,
+  // };
+};
+
+const passwordReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.val,
+      isValid: action.val.trim().length > 6,
+    };
+  } else if (action.type === 'INPUT_VALIDATE') {
+    return {
+      value: state.value,
+      isValid: state.value.trim().length > 6,
+    };
+  }
 };
 
 const Login = ({ onLogin }) => {
@@ -53,16 +67,20 @@ const Login = ({ onLogin }) => {
     isValid: null,
   });
 
-  // 패스워드 입력값을 저장
-  const [enteredPassword, setEnteredPassword] = useState('');
-  // 패스워드 입력이 정상적인지 확인
-  const [passwordIsValid, setPasswordIsValid] = useState();
+  // passwordState: 상태변수(비밀번호와 관련된 가장 최신의 상태값)
+  // passwordReducer를 호출할 수 있는 함수인 dispatchPassword
+  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
+    value: '',
+    isValid: null,
+  });
+
   // 이메일, 패스워드가 둘 다 동시에 정상적인 상태인지 확인
   const [formIsValid, setFormIsValid] = useState(false);
 
   // emailState는 객체 형태 -> isValid 프로퍼티가 변경됐을 때만 useEffect를 실행하게 하려면
   // isValid를 디스트럭쳐링한다.
   const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
   // 입력란을 모두 체크하여 form의 버튼 disabled를 해제하는 상태 변수
   // 상태 변수 formIsValid의 사이드 이펙트를 처리하는 영역
@@ -70,7 +88,7 @@ const Login = ({ onLogin }) => {
     const timer = setTimeout(() => {
       //make log and setFormisValid delayed per second
       console.log('useEffect called in Login.js!');
-      setFormIsValid(emailIsValid && enteredPassword.trim().length > 6);
+      setFormIsValid(emailIsValid && passwordIsValid);
     }, 1000);
 
     // cleanup 함수 - 컴포넌트가 업데이트 되거나 없어지기 전에 실행
@@ -82,7 +100,7 @@ const Login = ({ onLogin }) => {
     // 이 배열에 상태변수를 넣어주면 그 상태변수가 바뀔 때마다 useEffect를 재실행함.
     // if there's no data in array, then useEffect is executed at first
     // array is for repeat and necessary(although empty)
-  }, [emailIsValid, enteredPassword]);
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (e) => {
     // setEnteredEmail(e.target.value);
@@ -98,7 +116,10 @@ const Login = ({ onLogin }) => {
   };
 
   const passwordChangeHandler = (e) => {
-    setEnteredPassword(e.target.value);
+    dispatchPassword({
+      type: 'USER_INPUT',
+      val: e.target.value,
+    });
   };
 
   const validateEmailHandler = () => {
@@ -108,12 +129,14 @@ const Login = ({ onLogin }) => {
   };
 
   const validatePasswordHandler = () => {
-    setPasswordIsValid(enteredPassword.trim().length > 6);
+    dispatchPassword({
+      type: 'INPUT_VALIDATE',
+    });
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    onLogin(emailState.value, enteredPassword);
+    onLogin(emailState.value, passwordState.value);
   };
 
   return (
@@ -142,7 +165,7 @@ const Login = ({ onLogin }) => {
           <input
             type='password'
             id='password'
-            value={enteredPassword}
+            value={passwordState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />

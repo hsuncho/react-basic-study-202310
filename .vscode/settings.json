@@ -1,5 +1,6 @@
 {
   "liveServer.settings.CustomBrowser": "chrome",
   "java.saveActions.organizeImports": true,
-  "java.jdt.ls.androidSupport.enabled": "on"
+  "java.jdt.ls.androidSupport.enabled": "on",
+  "livePreview.customExternalBrowser": "Chrome"
 }

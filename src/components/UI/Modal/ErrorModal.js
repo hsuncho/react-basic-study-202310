@@ -1,6 +1,6 @@
 import React from 'react';
 // portal을 사용하기 위한 import
-import ReactDOM from 'react-dom';
+import { ReactDOM } from 'react-dom';
 import Card from '../Card';
 import Button from '../Button/Button';
 import styles from './ErrorModal.module.css';
